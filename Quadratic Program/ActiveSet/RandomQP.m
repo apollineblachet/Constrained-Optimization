@@ -1,0 +1,29 @@
+function [H,g,bl,A,bu,l,u, Aeq,beq] = RandomQP(n,alpha,density)
+% RandomQP  Generates data for a random convex QP
+%
+%   min     0.5 x' H x + g' x
+%    x
+%   s.t.     Aeq' x + beq = 0
+%            bl <= A' x <= bu
+%            l <=    x <= u
+%
+% Syntax: [H,g,bl,A,bu,l,u, Aeq,beq] = RandomQP(n,alpha,density)
+%
+%   Inputs:
+%       n       number of variabels
+%       alpha   regularization factor. alpha > 0
+%       density density of sparse matrix. 0 < density < 1
+%
+
+m = 2*n;
+meq = round(0.5*n);
+Aeq = randn(n,meq);
+A = randn(n,m);
+M = sprandn(n,n,density)*5;
+H = M*M' + alpha*eye(n,n);
+g = randn(n,1);
+bl = -rand(m,1) - 20;
+bu = rand(m,1) + 20;
+l = -ones(n,1)*10;
+u = ones(n,1)*10;
+beq = randn(meq,1);
